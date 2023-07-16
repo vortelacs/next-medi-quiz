@@ -1,12 +1,13 @@
 'use client'
 import React,{useState} from 'react'
-import axios from 'axios';
-import { useRouter } from 'next/router';
+import Cookies from 'js-cookie';
+import { useRouter } from 'next/navigation';
 
 const Login = () => {
     // const navigate = useNavigate();
     const [isLogin,setIsLogin] = useState(true);
   
+    const router = useRouter(); // Get the router object
     const [loginEmail,setLoginEmail] = useState("");
     const [loginPassword,setLoginPassword] = useState("");
   
@@ -19,7 +20,7 @@ const Login = () => {
       event.preventDefault();
     
       try {
-        const response = await fetch('http://192.168.0.102:8080/auth/login', {
+        const response = await fetch('http://localhost:8080/auth/login', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -31,8 +32,11 @@ const Login = () => {
         });
     
         if (response.ok) {
-          // const router = useRouter();
-          // router.push('/home');
+          const data = await response.json(); // Parse the JSON from the response
+          const token = data.token; 
+          Cookies.set('token', token);
+          
+          router.push('/home'); // Navigate to the home page
         } else {
           console.error('Error logging in', response);
           // The login failed
@@ -49,7 +53,6 @@ const Login = () => {
 const LoginForm = () => {
     return(
 <section className="">
-
     <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
       <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
         <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
