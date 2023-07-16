@@ -8,49 +8,53 @@ const Login = () => {
     const [isLogin,setIsLogin] = useState(true);
   
     const router = useRouter(); // Get the router object
-    const [loginEmail,setLoginEmail] = useState("");
-    const [loginPassword,setLoginPassword] = useState("");
+
   
-    const [registerEmail,setRegisterEmail] = useState("");
-    const [registerPassword,setRegisterPassword] = useState("");
-    const [registerName,setRegisterName] = useState("");
+
     // const [registerAvatar,setRegisterAvatar] = useState("");
 
-    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-      event.preventDefault();
-    
-      try {
-        const response = await fetch('http://localhost:8080/auth/login', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            email: loginEmail,
-            password: loginPassword,
-          })
-        });
-    
-        if (response.ok) {
-          const data = await response.json(); // Parse the JSON from the response
-          const token = data.token; 
-          Cookies.set('token', token);
-          
-          router.push('/home'); // Navigate to the home page
-        } else {
-          console.error('Error logging in', response);
-          // The login failed
-          // You can show an error message to the user
-        }
-      } catch (error) {
-        console.error('Network error:', error);
-        // There was a network error
-        // You can show an error message to the user
-      }
-    };
 
 
 const LoginForm = () => {
+
+  const [loginEmail,setLoginEmail] = useState("");
+  const [loginPassword,setLoginPassword] = useState("");
+
+
+  const handleLoginSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+  
+    try {
+      const response = await fetch('http://localhost:8080/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: loginEmail,
+          password: loginPassword,
+        })
+      });
+  
+      if (response.ok) {
+        const data = await response.json(); // Parse the JSON from the response
+        const token = data.token; 
+        Cookies.set('token', token);
+        
+        router.push('/home'); // Navigate to the home page
+      } else {
+        console.error('Error logging in', response);
+        // The login failed
+        // You can show an error message to the user
+      }
+    } catch (error) {
+      console.error('Network error:', error);
+      // There was a network error
+      // You can show an error message to the user
+    }
+  };
+
+
     return(
 <section className="">
     <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
@@ -59,7 +63,7 @@ const LoginForm = () => {
           Sign in to your account
         </h1>
         <form className="space-y-4 md:space-y-6" 
-        onSubmit={handleSubmit}
+        onSubmit={handleLoginSubmit}
         method="post"
         >
           <div>
@@ -150,6 +154,12 @@ const LoginForm = () => {
   }
   
   const  SignUpForm = () => {
+
+    const [registerEmail,setRegisterEmail] = useState("");
+    const [registerPassword,setRegisterPassword] = useState("");
+    const [registerName,setRegisterName] = useState("");
+
+
      return(
 
 <section className="">
