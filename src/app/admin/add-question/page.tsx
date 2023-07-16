@@ -11,22 +11,28 @@ const AddQuestion = () => {
     const [difficulty, setDifficulty] = useState("");
   
     const handleAddAnswer = () => {
-      setAnswers(prev => [...prev, { text: "", isCorrect: false }]);
-    };
+        setAnswers(prev => [...prev, { id: Date.now(), text: "", isCorrect: false }]);
+      };
   
-    const handleAnswerChange = (index: number, text: string, isCorrect: boolean) => {
-      setAnswers(prev => prev.map((answer, i) => i === index ? { text, isCorrect } : answer));
-    };
-  
+
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
       // Here you can send the question to the backend
       console.log({ questionTitle, answers, category, difficulty });
     };
 
-    const AddQuestionForm = () => {
-        return(
-    <section className="">
+const handleAnswerChange = (index: number, text: string, isCorrect: boolean) => {
+    setAnswers(prev => prev.map((answer, i) => i === index ? { text, isCorrect } : answer));
+    };
+
+
+
+    return (
+        <div className="flex flex-col items-center justify-center min-h-screen md:py-2 bg-gradient-radial from-gray-600 to-gray-900">
+        <main className="flex px-2 md:px-20 items-center">
+
+
+        <section className="">
         <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
           <form onSubmit={handleSubmit}>
@@ -82,16 +88,8 @@ const AddQuestion = () => {
             </div>
             </div>
             </section>
-            )
-}
 
 
-    return (
-        <div className="flex flex-col items-center justify-center min-h-screen md:py-2 bg-gradient-radial from-gray-600 to-gray-900">
-        <main className="flex px-2 md:px-20 items-center">
-          {
-            <AddQuestionForm></AddQuestionForm>
-          }
         </main>
         </div>
       )
