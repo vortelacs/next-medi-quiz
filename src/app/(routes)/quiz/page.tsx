@@ -81,7 +81,7 @@ const Quiz = () => {
         });
       
         console.log(`Your score is ${score} out of ${questions.length}`);
-        router.push("/quiz/result")
+
       };
 
         return (
