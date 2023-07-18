@@ -10,6 +10,7 @@ const Quiz = () => {
     const [questions, setQuestions] = useState<Question[]>([]);
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const router = useRouter(); 
+    const token = Cookies.get('token');
 
         useEffect(() => {
           const token = Cookies.get('token');
@@ -63,26 +64,37 @@ const Quiz = () => {
     
       const currentQuestion = questions[currentQuestionIndex];
 
-
       const handleQuizSubmit = () => {
-      
-        let score = 0;
-      
-        questions.forEach((question, index) => {
-          const correctAnswers = question.answers
-            .filter(answer => answer.isTrue)
-            .map(answer => answer.text);
+      fetch('http://localhost:8080/results/save', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          userId: 'user-id', // replace with the actual user ID
+          responses: selectedAnswers.map((answerTexts, index) => ({
+            questionId: questions[index].id,
+            selectedAnswerTexts: answerTexts,
+            isCorrect: null // replace with the actual correctness if available
+          }))
+        })
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log('Quiz submitted successfully:', data);
+        router.push('/quiz/result'); // redirect to a success page
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+    }
 
-          const selected = selectedAnswers[index] || [];
-          if (JSON.stringify(correctAnswers.sort()) === JSON.stringify(selected.sort())) {
-
-            score += 1;
-          }
-        });
-      
-        console.log(`Your score is ${score} out of ${questions.length}`);
-
-      };
 
         return (
           <section>

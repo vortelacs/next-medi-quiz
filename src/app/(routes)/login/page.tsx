@@ -38,9 +38,10 @@ const LoginForm = () => {
   
       if (response.ok) {
         const data = await response.json(); // Parse the JSON from the response
-        const token = data.token; 
+        const token = data.token;
+        const userId = data.userId; 
         Cookies.set('token', token);
-        
+        Cookies.set('userId', userId);
         router.push('/home'); // Navigate to the home page
       } else {
         console.error('Error logging in', response);
