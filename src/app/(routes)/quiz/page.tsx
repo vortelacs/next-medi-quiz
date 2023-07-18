@@ -65,6 +65,7 @@ const Quiz = () => {
       const currentQuestion = questions[currentQuestionIndex];
 
       const handleQuizSubmit = () => {
+        const userId = Cookies.get('userId');
       fetch('http://localhost:8080/results/save', {
         method: 'POST',
         headers: {
@@ -72,7 +73,7 @@ const Quiz = () => {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          userId: 'user-id', // replace with the actual user ID
+          userId: userId, // replace with the actual user ID
           responses: selectedAnswers.map((answerTexts, index) => ({
             questionId: questions[index].id,
             selectedAnswerTexts: answerTexts,
