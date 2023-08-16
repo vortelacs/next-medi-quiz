@@ -4,6 +4,7 @@ import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
 
 const Login = () => {
+  const springServerUrl = process.env.NEXT_PUBLIC_SPRING_SERVER_URL;
     // const navigate = useNavigate();
     const [isLogin,setIsLogin] = useState(true);
   
@@ -25,7 +26,7 @@ const LoginForm = () => {
     event.preventDefault();
   
     try {
-      const response = await fetch('http://localhost:8080/auth/login', {
+      const response = await fetch('${springServerUrl}/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
