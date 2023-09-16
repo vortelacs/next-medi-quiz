@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import { ChangeEvent, useEffect, useState } from 'react';
 
 const Quiz = () => {
-
+  const springServerUrl = process.env.NEXT_PUBLIC_SPRING_SERVER_URL;
   const QuestionForm = () => {
     const [selectedAnswers, setSelectedAnswers] = useState<string[][]>([]);
     const [questions, setQuestions] = useState<Question[]>([]);
@@ -15,7 +15,7 @@ const Quiz = () => {
         useEffect(() => {
           const token = Cookies.get('token');
         
-          fetch('http://localhost:8080/quiz/quick', {
+          fetch('${springServerUrl}/quiz/quick', {
             headers: {
               'Authorization': `Bearer ${token}`
             }
@@ -66,7 +66,7 @@ const Quiz = () => {
 
       const handleQuizSubmit = () => {
         const userId = Cookies.get('userId');
-      fetch('http://localhost:8080/results/save', {
+      fetch('${springServerUrl}/results/save', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -88,7 +88,8 @@ const Quiz = () => {
         return response.json();
       })
       .then(data => {
-        console.log('Quiz submitted successfully:', data);
+        // TODO remove log
+        console.log('Quiz submitted successfully:', data); 
         router.push('/quiz/result'); // redirect to a success page
       })
       .catch(error => {

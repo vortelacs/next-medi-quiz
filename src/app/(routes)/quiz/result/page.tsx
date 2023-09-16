@@ -8,34 +8,43 @@ interface QuizResultFormProps {
   }
 
 const ResultForm = ()=> {
-
+  const springServerUrl = process.env.NEXT_PUBLIC_SPRING_SERVER_URL;
     const[quizResults, setQuizResults] = useState<QuizResult[]>([])
 
     useEffect(() => {
-    
-        const token = Cookies.get('token');
-        const userId  = Cookies.get('userId');
-        fetch('http://localhost:8080/results/all', {
-            method : 'POST',
-            headers: {
-            'Authorization': `Bearer ${token}`
-          },
-            body: JSON.stringify({
-            userId : userId,
-          })
-        })
+      const token = Cookies.get('token');
+      const userId = Cookies.get('userId');
+  
+      console.log('Sending request to server...');
+      console.log('User ID:', userId);
+      console.log('Request Body:', JSON.stringify({ userId }));
+  
+      fetch('${springServerUrl}/results/all', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json', // Set Content-Type to JSON
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ userId }) // Ensure this is a valid JSON object
+      })
         .then(response => {
+          console.log('Response received.');
           if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
           }
           return response.json();
         })
-        .then(data => setQuizResults(data))
+        .then(data => {
+          console.log('Quiz results received:', data);
+          setQuizResults(data);
+        })
         .catch(error => {
           console.error('Error:', error);
-          <p>Something went wrong</p>
+          // Handle the error as needed
         });
-      }, []);
+    }, []);
+  
 
       const QuizResultForm: React.FC<{quizResult: QuizResult}> = ({quizResult}) => {
         return (
