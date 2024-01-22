@@ -2,10 +2,7 @@
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, useEffect, useState } from "react";
-
-interface QuizResultFormProps {
-  quizResult: QuizResult;
-}
+import QuizResultForm from "@/app/_components/profile/QuizResultForm";
 
 const ResultForm = () => {
   const springServerUrl = process.env.NEXT_PUBLIC_SPRING_SERVER_URL;
@@ -23,10 +20,10 @@ const ResultForm = () => {
       method: "POST",
       headers: {
         Accept: "application/json",
-        "Content-Type": "application/json", // Set Content-Type to JSON
+        "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({ userId }), // Ensure this is a valid JSON object
+      body: JSON.stringify({ userId }),
     })
       .then((response) => {
         console.log("Response received.");
@@ -41,40 +38,13 @@ const ResultForm = () => {
       })
       .catch((error) => {
         console.error("Error:", error);
-        // Handle the error as needed
       });
   }, []);
 
-  const QuizResultForm: React.FC<{ quizResult: QuizResult }> = ({
-    quizResult,
-  }) => {
-    return (
-      <div className="flex">
-        {quizResult.responses.map((response, index) => (
-          <div key={index}>
-            <h2>Question {index + 1}</h2>
-            <p>Selected Answers: {response.selectedAnswerTexts.join(", ")}</p>
-            <p>{response.isCorrect ? "Correct" : "Incorrect"}</p>
-          </div>
-        ))}
-      </div>
-    );
-  };
-
   return (
     <div className="flex w-screen flex-col items-center justify-center min-h-screen md:py-2 bg-gradient-radial from-gray-600 to-gray-900">
-      <main className="flex  px-2 md:px-20 items-center">
-        {!quizResults || quizResults.length === 0 ? (
-          <p>No quiz results found.</p>
-        ) : (
-          <div>
-            <h1>Your quiz results</h1>
-            {quizResults.map((quizResult, index) => (
-              <QuizResultForm key={index} quizResult={quizResult} />
-            ))}
-          </div>
-        )}
-      </main>
+      <main className="flex  px-2 md:px-20 items-center"></main>
+      <QuizResultForm quizResults={quizResults} />
     </div>
   );
 };
