@@ -1,8 +1,8 @@
 "use client";
 import Cookies from "js-cookie";
-import { useRouter } from "next/navigation";
 import { ChangeEvent, useEffect, useState } from "react";
 import QuizResultForm from "@/app/_components/profile/QuizResultForm";
+import Navbar from "@/app/_components/common/Navbar";
 
 const ResultForm = () => {
   const springServerUrl = process.env.NEXT_PUBLIC_SPRING_SERVER_URL;
@@ -42,9 +42,11 @@ const ResultForm = () => {
   }, []);
 
   return (
-    <div className="flex w-screen flex-col items-center justify-center min-h-screen md:py-2 bg-gradient-radial from-gray-600 to-gray-900">
-      <main className="flex  px-2 md:px-20 items-center"></main>
-      <QuizResultForm quizResults={quizResults} />
+    <div className="relative  w-screen  min-h-screen bg-gradient-radial from-gray-600 to-gray-900">
+      <Navbar />
+      <div className="flex flex-col items-center justify-center">
+        <QuizResultForm quizResults={quizResults} />
+      </div>
     </div>
   );
 };
